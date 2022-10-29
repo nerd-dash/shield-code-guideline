@@ -794,3 +794,18 @@ Used for `public` methods and properties that **_are NOT used on the view_** but
 #### Private and Protected modifiers:
 
 Used for `non public` methods and properties that **_are used only on the component class or its inherited classes_** but should be public.
+
+
+## SASS guide lines
+
+> Based on [Sass Code Style](https://sass-lang.com/styleguide/code)
+
+### For creating the style class names you should consider :
+
+  * Use the **BEM** syntax.
+  * **Block** – the overall component object. _Example:_ `sl-c-card`.
+  * **Element** – any child of the block. _Example:_ `sl-c-card__header`.
+  * **Modifier** – any variation. This can be put on a block. _Example:_ `sl-c-card--primary`. It can also be put on an element _Example:_ `sl-c-card__header--large`.
+  * Keep classes as flat as possible, and avoid nesting too deep.
+  * For naming of variables, mixins, placeholder selectors, or classes, use the general-to-specific approach. See [this article](http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/quick-tip-name-your-sass-variables-modularly/) for more details.
+  * Write comma-delimited selectors on separate lines.
