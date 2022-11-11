@@ -1,36 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SfcComponent } from './sfc.component';
 
-describe('SfcComponent', () => {
+import { AppComponent } from './app.component';
 
-  let component: SfcComponent;
-  let fixture: ComponentFixture<SfcComponent>;
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
   let compiled: HTMLElement;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [SfcComponent]
+      declarations: [AppComponent]
     }).compileComponents();
   });
-
   beforeEach(() => {
-    fixture = TestBed.createComponent(SfcComponent);
+    fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     compiled = fixture.nativeElement as HTMLElement;
     fixture.detectChanges();
   });
-
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(SfcComponent);
+    const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
-
   it('should contain router-outlet', () => {
-    expect(
-      compiled.querySelector('router-outlet')
-    ).not.toBeNull();
+    expect(compiled.querySelector('router-outlet')).not.toBeNull();
   });
 });
