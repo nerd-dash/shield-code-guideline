@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: ``,
     loadChildren: () =>
-      import('./features/home/home.module').then((m) => m.HomeModule)
+      import('./core/main/main.module').then((m) => m.MainModule)
   }
 ];
 @NgModule({
