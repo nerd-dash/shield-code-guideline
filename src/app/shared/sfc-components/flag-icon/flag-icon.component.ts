@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { environment } from 'src/environments/environment';
+import { Observable, of } from 'rxjs';
+
+import { Country } from '../../models/County';
+import { CountryService } from '../../services/country/country.service';
 
 @Component({
   selector: 'sfc-flag-icon',
@@ -10,22 +12,10 @@ import { environment } from 'src/environments/environment';
 })
 export class FlagIconComponent {
   @Input() set country(value: string) {
-    this.internalCountry = value;
+    this.country$ = this.countryService.getByCode(value);
   }
 
-  get country() {
-    return this.internalCountry;
-  }
+  country$: Observable<Country> = of();
 
-  private internalCountry = ``;
-
-  get flagUrl() {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `${this.flagIconBaseUrl}/${this.country}`
-    );
-  }
-
-  constructor(private sanitizer: DomSanitizer) {}
-
-  private flagIconBaseUrl = environment.flagIconBaseUrl;
+  constructor(private countryService: CountryService) {}
 }

@@ -1,12 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UsersComponent } from './users.component';
+export enum UserRoutes {
+  LIST = `list`,
+  FORM = `form`
+}
 
 const routes: Routes = [
   {
-    path: '',
-    component: UsersComponent
+    path: ``,
+    redirectTo: UserRoutes.LIST
+  },
+  {
+    path: UserRoutes.LIST,
+    loadChildren: () =>
+      import('./users-list/users-list.module').then((m) => m.UsersListModule)
+  },
+  {
+    path: UserRoutes.FORM,
+    loadChildren: () =>
+      import('./user-form/user-form.module').then((m) => m.UserFormModule)
   }
 ];
 

@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   baseUrl : `http://localhost:3000`,
-  flagIconBaseUrl : `https://countryflagsapi.com/svg`
+  countryApi : `https://restcountries.com/v2`
 };
 
 /*
