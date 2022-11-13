@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'sfc-user-form',
@@ -7,18 +7,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./user-form.component.scss']
 })
 export class UserFormComponent implements OnInit {
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    firstName: new FormControl(``),
+    lastName: new FormControl(``),
+    email: new FormControl(``),
+    gender: new FormControl(``),
+    country: new FormControl(``)
+  });
 
-  constructor(private formBuilder: FormBuilder) {
-    
-    this.form = this.formBuilder.group({
-      firstName: [null],
-      lastName: [null],
-      email: [null],
-      gender: [null],
-      country: [null]
-    });
-  }
+  constructor() {}
 
   ngOnInit(): void {}
 }
