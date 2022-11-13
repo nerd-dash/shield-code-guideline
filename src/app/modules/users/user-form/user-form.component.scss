@@ -1,5 +1,6 @@
 form {
   padding: 1rem;
+  min-width: 14rem;
 
   .form__row {
     display: flex;
@@ -10,5 +11,10 @@ form {
     * {
       flex-grow: 1;
     }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
   }
 }

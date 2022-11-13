@@ -1,8 +1,8 @@
 <mat-card>
-  <mat-toolbar> Form User </mat-toolbar>
+  <mat-toolbar color="primary"> Form User </mat-toolbar>
 
-  <mat-card-content class="mat-elevation-z8">
-    <form [formGroup]="form">
+  <form [formGroup]="form" class="mat-elevation-z8">
+    <mat-card-content >
       <div class="form__row">
         <mat-form-field appearance="fill">
           <mat-label>First Name</mat-label>
@@ -32,12 +32,22 @@
         <mat-form-field appearance="fill">
           <mat-label>Country</mat-label>
           <mat-select formControlName="country">
-            <mat-option value="Male"> Male </mat-option>
+            <mat-option
+              *ngFor="let option of countyOptions"
+              [value]="option.value"
+              ><span class="country__options">
+                <sfc-flag-icon [country]="option.value"></sfc-flag-icon>
+                {{ option.label }}
+              </span>
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-    </form>
-  </mat-card-content>
+    </mat-card-content>
 
-  <mat-card-actions> </mat-card-actions>
+    <mat-card-actions>
+      <button mat-raised-button color="primary">Save</button>
+      <button mat-raised-button>Cancel</button>
+    </mat-card-actions>
+  </form>
 </mat-card>
