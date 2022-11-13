@@ -10,5 +10,5 @@ import { User } from '../../models/User';
 export class UsersListComponent {
   @Input() users: User[] = [];
 
-  displayedColumns = [`id`, `firstName`, `lastName`, `email`];
+  displayedColumns = [`id`, `firstName`, `lastName`, `email`, `gender`, `country`];
 }

@@ -5,5 +5,5 @@ export interface User extends Entity {
   lastName: string;
   email: string;
   gender: string;
-  ipAddress?: string;
+  country: string;
 }

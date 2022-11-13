@@ -36,7 +36,7 @@ export class UsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      console.error(result);
     });
   }
 }
