@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { catchError, first } from 'rxjs/operators';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { UserService } from 'src/app/shared/services';
 import { ErrorDialogComponent } from 'src/app/shared/sfc-components';
+import { PageEvent } from '@angular/material/paginator';
 
 import { User } from '../../../shared/models/User';
 import { UserRoutes } from '../users-routing.module';
@@ -21,11 +22,16 @@ export class UsersListComponent {
     `lastName`,
     `email`,
     `gender`,
-    `country`,
-    `actions`
+    `country`
   ];
 
   users: User[] = [];
+
+  pageEvent: PageEvent = {
+    length: 100,
+    pageIndex: 1,
+    pageSize: 10
+  };
 
   constructor(
     private userService: UserService,
@@ -36,19 +42,56 @@ export class UsersListComponent {
 
   ngOnInit(): void {
     this.userService
-      .readAll()
+      .readAll({
+        page: this.pageEvent.pageIndex,
+        limit: this.pageEvent.pageSize
+      })
       .pipe(
         first(),
+        map((response) => {
+          const length = response.headers.get('X-Total-Count') || '10';
+          this.pageEvent.length = parseInt(length, 10);
+          this.users = response.body || [];
+        }),
         catchError((error) => {
           this.onError(error);
           return of([]);
         })
       )
-      .subscribe((users) => (this.users = users));
+      .subscribe();
   }
 
   onAdd() {
     this.router.navigate([`../${UserRoutes.FORM}`], { relativeTo: this.route });
+  }
+
+  onSearch(event:any){
+    const query = event.target?.value;
+    this.userService
+    .readAll({
+      page: this.pageEvent.pageIndex,
+      limit: this.pageEvent.pageSize,
+      query
+    })
+    .pipe(
+      first(),
+      map((response) => {
+        const length = response.headers.get('X-Total-Count') || '10';
+        this.pageEvent.length = parseInt(length, 10);
+        this.users = response.body || [];
+      }),
+      catchError((error) => {
+        this.onError(error);
+        return of([]);
+      })
+    )
+    .subscribe();
+    
+  }
+
+  onPageChange(pageEvent: PageEvent) {
+    this.pageEvent = pageEvent;
+    console.log(this.pageEvent);
   }
 
   private onError(error: Error): void {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { UserService } from 'src/app/shared/services';
 import { CountryService } from 'src/app/shared/services/country/country.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class UserFormComponent {
 
   countyOptions = [{ value: ``, label: `` }];
 
-  constructor(private countryService: CountryService) {
+  constructor(private countryService: CountryService, private userService : UserService) {
     this.countryService
       .getAll()
       .pipe(first())
@@ -30,4 +31,13 @@ export class UserFormComponent {
         }));
       });
   }
+
+  onSubmit(){
+    this.userService.create(this.form.value).subscribe(console.log)
+  }
+
+  onCancel(){
+
+  }
+
 }

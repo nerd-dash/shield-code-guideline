@@ -1,9 +1,7 @@
-table {
-  width: 100%;
+mat-row {
+  column-gap: 1rem;
+}
 
-  .mat-column-actions {
-    display: flex;
-    text-align: right;
-    justify-content: flex-end;
-  }
+mat-toolbar {
+  justify-content: space-between;
 }

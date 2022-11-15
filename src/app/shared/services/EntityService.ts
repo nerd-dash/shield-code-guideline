@@ -8,6 +8,7 @@ export interface HttpParamsOptions {
   limit: number;
   sort: string;
   order: `asc` | `desc`;
+  query: string;
 }
 
 export abstract class EntityService<T extends Entity> {
@@ -31,17 +32,20 @@ export abstract class EntityService<T extends Entity> {
       limit: 10,
       sort: `id`,
       order: `asc`,
+      query: '',
       ...options
     };
-    const { page, limit, order, sort } = options;
+    const { page, limit, order, sort, query } = options;
     let params = new HttpParams();
     if (page) params = params.set(`_page`, page);
     if (limit) params = params.set(`_limit`, limit);
     if (sort) params = params.set(`_sort`, sort);
     if (order) params = params.set(`_order`, order);
+    if (query) params = params.set(`q`, query);
 
     return this.httpClient.get<T[]>(`${environment.baseUrl}/${this.uri}`, {
-      params
+      params,
+      observe: 'response'
     });
   }
 

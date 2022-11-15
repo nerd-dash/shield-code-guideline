@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { UserService } from 'src/app/shared/services';
 import { CountryService } from 'src/app/shared/services/country/country.service';
 import { FlagIconModule } from 'src/app/shared/sfc-components/flag-icon/flag-icon.module';
 
@@ -29,7 +30,7 @@ import { UserFormComponent } from './user-form.component';
     FlagIconModule,
     MatButtonModule
   ],
-  providers: [CountryService],
+  providers: [CountryService, UserService],
   exports: [UserFormComponent]
 })
 export class UserFormModule {}
