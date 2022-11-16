@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { of, Subscription } from 'rxjs';
+import { debounceTime, first } from 'rxjs/operators';
 import { UserService } from 'src/app/shared/services';
 import { ErrorDialogComponent } from 'src/app/shared/sfc-components';
-import { PageEvent } from '@angular/material/paginator';
 
 import { User } from '../../../shared/models/User';
 import { UserRoutes } from '../users-routing.module';
@@ -15,7 +16,7 @@ import { UserRoutes } from '../users-routing.module';
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
 })
-export class UsersListComponent {
+export class UsersListComponent implements OnInit, OnDestroy {
   displayedColumns = [
     `id`,
     `firstName`,
@@ -25,13 +26,25 @@ export class UsersListComponent {
     `country`
   ];
 
+  inputSearchFormControl = new FormControl('');
+
+  formGroup = new FormGroup({
+    inputSearchFormControl: this.inputSearchFormControl
+  });
+
   users: User[] = [];
+  isLoading = true;
+  hasError = false;
 
   pageEvent: PageEvent = {
     length: 100,
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10
   };
+
+  private query = '';
+
+  private sub = new Subscription();
 
   constructor(
     private userService: UserService,
@@ -41,60 +54,66 @@ export class UsersListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.userService
-      .readAll({
-        page: this.pageEvent.pageIndex,
-        limit: this.pageEvent.pageSize
-      })
-      .pipe(
-        first(),
-        map((response) => {
-          const length = response.headers.get('X-Total-Count') || '10';
-          this.pageEvent.length = parseInt(length, 10);
-          this.users = response.body || [];
-        }),
-        catchError((error) => {
-          this.onError(error);
-          return of([]);
-        })
-      )
-      .subscribe();
+    this.updateTable();
+
+    this.sub.add(
+      this.inputSearchFormControl.valueChanges
+        .pipe(debounceTime(300))
+        .subscribe((value) => this.onSearch(value))
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   onAdd() {
     this.router.navigate([`../${UserRoutes.FORM}`], { relativeTo: this.route });
   }
 
-  onSearch(event:any){
-    const query = event.target?.value;
-    this.userService
-    .readAll({
-      page: this.pageEvent.pageIndex,
-      limit: this.pageEvent.pageSize,
-      query
-    })
-    .pipe(
-      first(),
-      map((response) => {
-        const length = response.headers.get('X-Total-Count') || '10';
-        this.pageEvent.length = parseInt(length, 10);
-        this.users = response.body || [];
-      }),
-      catchError((error) => {
-        this.onError(error);
-        return of([]);
-      })
-    )
-    .subscribe();
-    
+  onSearch(value: string) {
+    this.query = value;
+    this.pageEvent = {
+      length: 100,
+      pageIndex: 0,
+      pageSize: 10
+    };
+    this.updateTable();
   }
 
   onPageChange(pageEvent: PageEvent) {
     this.pageEvent = pageEvent;
-    console.log(this.pageEvent);
+    this.updateTable();
+  }
+
+  private updateTable() {
+    this.isLoading = true;
+    this.hasError = false;
+
+    this.userService
+      .readAll({
+        page: this.pageEvent.pageIndex + 1,
+        limit: this.pageEvent.pageSize,
+        query: this.query
+      })
+      .pipe(first())
+      .subscribe(
+        (response) => {
+          const length = response.headers.get('X-Total-Count') || '10';
+          this.pageEvent.length = parseInt(length, 10);
+          this.users = response.body || [];
+          this.isLoading = false;
+        },
+        (error) => {
+          this.onError(error);
+          return of([]);
+        }
+      );
   }
 
   private onError(error: Error): void {
+    this.hasError = true;
+    this.isLoading = false;
     const dialogRef = this.dialog.open(ErrorDialogComponent, {
       width: '30wv',
       data: error

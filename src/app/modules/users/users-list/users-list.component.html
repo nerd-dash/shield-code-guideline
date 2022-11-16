@@ -1,75 +1,86 @@
 <mat-card>
-  <div *ngIf="users.length; else loading" class="mat-elevation-z8">
-    <mat-toolbar color="primary">
-      <span>Users</span>
-      
-      <mat-form-field appearance="standard">
-        <mat-label>Search</mat-label>
-        <input matInput placeholder="start typing..." (change)="onSearch($event)">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
+  <ng-container *ngIf="!isLoading; else loading">
+    <ng-container *ngIf="users.length >= 0; else error">
+      <div class="mat-elevation-z8">
+        <mat-toolbar color="primary">
+          <span>Users</span>
 
-        <button mat-mini-fab aria-label="Add new user" (click)="onAdd()">
-          <mat-icon>add</mat-icon>
-        </button>
-      
-    </mat-toolbar>
-    <mat-table [dataSource]="users">
-      <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+          <form [formGroup]="formGroup">
+            <mat-form-field appearance="standard">
+              <mat-label>Search</mat-label>
+              <input
+                matInput
+                placeholder="start typing..."
+                [formControl]="inputSearchFormControl"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </form>
 
-      <!-- Id Name Column -->
-      <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
-      </ng-container>
+          <!-- <button mat-mini-fab aria-label="Add new user" (click)="onAdd()">
+              <mat-icon>add</mat-icon>
+            </button> -->
+        </mat-toolbar>
+        <mat-table [dataSource]="users">
+          <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
 
-      <!-- First Name Column -->
-      <ng-container matColumnDef="firstName">
-        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
-      </ng-container>
+          <!-- Id Name Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
+          </ng-container>
 
-      <!-- Last Name Column -->
-      <ng-container matColumnDef="lastName">
-        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
-      </ng-container>
+          <!-- First Name Column -->
+          <ng-container matColumnDef="firstName">
+            <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
+          </ng-container>
 
-      <!-- Email Column -->
-      <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
-      </ng-container>
+          <!-- Last Name Column -->
+          <ng-container matColumnDef="lastName">
+            <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
+          </ng-container>
 
-      <!-- Gender Column -->
-      <ng-container matColumnDef="gender">
-        <mat-header-cell *matHeaderCellDef>Gender</mat-header-cell>
-        <mat-cell *matCellDef="let user">
-          <mat-icon>{{ user.gender | lowercase }}</mat-icon>
-        </mat-cell>
-      </ng-container>
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+            <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+          </ng-container>
 
-      <!-- Country Column -->
-      <ng-container matColumnDef="country">
-        <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
-        <mat-cell *matCellDef="let user">
-          <sfc-flag-icon [country]="user.country"></sfc-flag-icon>
-        </mat-cell>
-      </ng-container>
+          <!-- Gender Column -->
+          <ng-container matColumnDef="gender">
+            <mat-header-cell *matHeaderCellDef>Gender</mat-header-cell>
+            <mat-cell *matCellDef="let user">
+              <mat-icon>{{ user.gender | lowercase }}</mat-icon>
+            </mat-cell>
+          </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
-    <mat-paginator
-      [length]="pageEvent.length"
-      [pageSize]="pageEvent.pageSize"
-      [pageSizeOptions]="[5, 10, 25, 100]"
-      (page)="onPageChange($event)"
-      aria-label="Select page"
-    >
-    </mat-paginator>
-  </div>
+          <!-- Country Column -->
+          <ng-container matColumnDef="country">
+            <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
+            <mat-cell *matCellDef="let user">
+              <sfc-flag-icon [country]="user.country"></sfc-flag-icon>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+        <mat-paginator
+          [length]="pageEvent.length"
+          [pageSize]="pageEvent.pageSize"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          [pageIndex]="pageEvent.pageIndex"
+          (page)="onPageChange($event)"
+          aria-label="Select page"
+        >
+        </mat-paginator>
+      </div>
+    </ng-container>
+    <ng-template #error> Error </ng-template>
+  </ng-container>
   <ng-template #loading>
     <sfc-progress-spinner></sfc-progress-spinner>
   </ng-template>

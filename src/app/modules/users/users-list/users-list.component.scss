@@ -5,3 +5,8 @@ mat-row {
 mat-toolbar {
   justify-content: space-between;
 }
+
+mat-table{
+  max-height: 70vh;
+  overflow: auto;
+}
