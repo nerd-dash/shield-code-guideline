@@ -8,7 +8,7 @@ import { debounceTime, first } from 'rxjs/operators';
 import { UserService } from 'src/app/shared/services';
 import { ErrorDialogComponent } from 'src/app/shared/sfc-components';
 
-import { User } from '../../../shared/models/User';
+import { User } from '../../../shared/models/user.interface';
 import { UserRoutes } from '../users-routing.module';
 
 @Component({

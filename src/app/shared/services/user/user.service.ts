@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { User } from '../../models/User';
-import { EntityService } from '../EntityService';
+import { User } from '../../models/user.interface';
+import { EntityService } from '../entity/entity.service';
 
 @Injectable()
 export class UserService extends EntityService<User> {

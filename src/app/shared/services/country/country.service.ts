@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-import { Country } from '../../models/County';
+import { Country } from '../../models/county.interface';
 
 @Injectable()
 export class CountryService {

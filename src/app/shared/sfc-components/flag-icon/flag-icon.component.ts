@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { Country } from '../../models/County';
+import { Country } from '../../models/county.interface';
 import { CountryService } from '../../services/country/country.service';
 
 @Component({

@@ -1,2 +1,2 @@
-export * from './EntityService';
+export * from './entity/entity.service';
 export * from './user';
