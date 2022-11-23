@@ -111,6 +111,7 @@
   },
   "defaultProject": "shield-code-guideline",
   "cli": {
+    "analytics": false,
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

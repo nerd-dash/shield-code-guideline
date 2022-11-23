@@ -8,7 +8,7 @@ import { FlagIconComponent } from './flag-icon.component';
 @NgModule({
   declarations: [FlagIconComponent],
   imports: [CommonModule, HttpClientModule],
-  providers : [CountryService],
+  providers: [CountryService],
   exports: [FlagIconComponent]
 })
 export class FlagIconModule {}

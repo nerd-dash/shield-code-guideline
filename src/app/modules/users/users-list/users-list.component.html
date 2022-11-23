@@ -21,53 +21,11 @@
               <mat-icon>add</mat-icon>
             </button> -->
         </mat-toolbar>
-        <mat-table [dataSource]="users">
-          <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-
-          <!-- Id Name Column -->
-          <ng-container matColumnDef="id">
-            <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
-            <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
-          </ng-container>
-
-          <!-- First Name Column -->
-          <ng-container matColumnDef="firstName">
-            <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
-            <mat-cell *matCellDef="let user">{{ user.firstName }}</mat-cell>
-          </ng-container>
-
-          <!-- Last Name Column -->
-          <ng-container matColumnDef="lastName">
-            <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
-            <mat-cell *matCellDef="let user">{{ user.lastName }}</mat-cell>
-          </ng-container>
-
-          <!-- Email Column -->
-          <ng-container matColumnDef="email">
-            <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-            <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
-          </ng-container>
-
-          <!-- Gender Column -->
-          <ng-container matColumnDef="gender">
-            <mat-header-cell *matHeaderCellDef>Gender</mat-header-cell>
-            <mat-cell *matCellDef="let user">
-              <mat-icon>{{ user.gender | lowercase }}</mat-icon>
-            </mat-cell>
-          </ng-container>
-
-          <!-- Country Column -->
-          <ng-container matColumnDef="country">
-            <mat-header-cell *matHeaderCellDef>Country</mat-header-cell>
-            <mat-cell *matCellDef="let user">
-              <sfc-flag-icon [country]="user.country"></sfc-flag-icon>
-            </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-        </mat-table>
+        <sfc-table
+          [data]="users"
+          (tableComponentEvent)="tableComponentEvent($event)"
+        >
+        </sfc-table>
         <mat-paginator
           [length]="pageEvent.length"
           [pageSize]="pageEvent.pageSize"

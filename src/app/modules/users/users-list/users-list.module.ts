@@ -16,6 +16,7 @@ import {
   ProgressSpinnerModule
 } from 'src/app/shared/sfc-components';
 import { FlagIconModule } from 'src/app/shared/sfc-components/flag-icon/flag-icon.module';
+import { TableModule } from 'src/app/shared/sfc-components/table/table.module';
 
 import { UsersListRoutingModule } from './users-list-routing.module';
 import { UsersListComponent } from './users-list.component';
@@ -37,7 +38,8 @@ import { UsersListComponent } from './users-list.component';
     ErrorDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TableModule
   ],
   providers: [UserService],
   exports: [UsersListComponent]

@@ -1,3 +1,4 @@
+import { TableDataSource } from './../../../shared/models/table-data-source.interface';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,7 +33,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
     inputSearchFormControl: this.inputSearchFormControl
   });
 
-  users: User[] = [];
+  users!: TableDataSource[];
   isLoading = true;
   hasError = false;
 
@@ -86,6 +87,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.updateTable();
   }
 
+  tableComponentEvent(event: TableDataSource) {
+    console.log(event);
+  }
+
   private updateTable() {
     this.isLoading = true;
     this.hasError = false;
@@ -101,7 +106,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
         (response) => {
           const length = response.headers.get('X-Total-Count') || '10';
           this.pageEvent.length = parseInt(length, 10);
-          this.users = response.body || [];
+          this.users =
+            response.body?.map(this.userToTableDataSourceParser) || [];
           this.isLoading = false;
         },
         (error) => {
@@ -122,5 +128,19 @@ export class UsersListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       console.error(result);
     });
+  }
+
+  private userToTableDataSourceParser({
+    country,
+    id,
+    email,
+    firstName,
+    gender,
+    lastName
+  }: User): TableDataSource {
+    return {
+      selectId: id,
+      country
+    };
   }
 }
