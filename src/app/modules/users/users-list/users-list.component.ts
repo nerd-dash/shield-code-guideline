@@ -11,6 +11,7 @@ import { ErrorDialogComponent } from 'src/app/shared/sfc-components';
 
 import { User } from '../../../shared/models/User';
 import { UserRoutes } from '../users-routing.module';
+import { TableDataProps } from 'src/app/shared/models/table-data-props.enum';
 
 @Component({
   selector: 'sfc-users-list',
@@ -140,7 +141,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   }: User): TableDataSource {
     return {
       country,
-      selectId: id
+      [TableDataProps.SELECT_ID]: id
     };
   }
 }
