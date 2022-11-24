@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { TemplateParseError } from '@angular/compiler';
+import {
+  Component,
+  ContentChild,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef
+} from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';
 import { TableDataProps } from '../../models/table-data-props.enum';
@@ -21,6 +30,9 @@ export class TableComponent {
   @Input() displayedColumns: string[] = [];
 
   @Output() tableComponentEvent = new EventEmitter<TableDataSource>();
+
+  @ContentChild('headers') headers!: TemplateRef<any>;
+  @ContentChild('cells') cells!: TemplateRef<any>;
 
   _dataSource: MatTableDataSource<TableDataSource> =
     new MatTableDataSource<TableDataSource>();

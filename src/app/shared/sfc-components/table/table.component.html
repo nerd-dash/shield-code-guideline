@@ -5,14 +5,14 @@
   >
     <mat-header-cell *matHeaderCellDef>
       <ng-container
-        [ngTemplateOutlet]="headersDefault"
+        [ngTemplateOutlet]="headers || headersDefault"
         [ngTemplateOutletContext]="{ $implicit: columnName }"
       ></ng-container>
     </mat-header-cell>
-    <mat-cell *matCellDef="let row">
+    <mat-cell *matCellDef="let cell">
       <ng-container
-        [ngTemplateOutlet]="rows"
-        [ngTemplateOutletContext]="{ $implicit: row, columnName }"
+        [ngTemplateOutlet]="cells || cellsDefault"
+        [ngTemplateOutletContext]="{ $implicit: cell, columnName }"
       ></ng-container>
     </mat-cell>
   </ng-container>
@@ -27,21 +27,12 @@
   </ng-container>
 </ng-template>
 
-<ng-template #rows let-row let-columnName="columnName">
+<ng-template #cellsDefault let-cell let-columnName="columnName">
   <ng-container [ngSwitch]="columnName">
-    <sfc-flag-icon
-      *ngSwitchCase="TableDataProps.COUNTRY"
-      [country]="row.country"
-      >{{ columnName }}</sfc-flag-icon
-    >
-    <ng-container *ngSwitchCase="TableDataProps.GENDER">
-      <mat-icon>{{ row.gender | lowercase }}</mat-icon> {{ row.gender }}
-    </ng-container>
-
     <ng-container *ngSwitchCase="TableDataProps.SELECT_ID">
-      <mat-checkbox (change)="_selectIdChanged($event, row)"> </mat-checkbox>
+      <mat-checkbox (change)="_selectIdChanged($event, cell)"> </mat-checkbox>
     </ng-container>
 
-    <ng-container *ngSwitchDefault>{{ row[columnName] }}</ng-container>
+    <ng-container *ngSwitchDefault>{{ cell[columnName] }}</ng-container>
   </ng-container>
 </ng-template>

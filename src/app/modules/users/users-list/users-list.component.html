@@ -25,7 +25,22 @@
           [data]="users"
           (tableComponentEvent)="tableComponentEvent($event)"
         >
+          <ng-template #headers let-columnName>
+            <ng-container *ngIf="columnName === 'country'"
+              >Country</ng-container
+            >
+          </ng-template>
+          <ng-template #cells let-cell let-columnName="columnName">
+            <sfc-flag-icon
+              *ngIf="columnName === 'country'"
+              [country]="cell.country"
+            ></sfc-flag-icon>
+          </ng-template>
         </sfc-table>
+        <sfc-table
+          [data]="users"
+          (tableComponentEvent)="tableComponentEvent($event)"
+        ></sfc-table>
         <mat-paginator
           [length]="pageEvent.length"
           [pageSize]="pageEvent.pageSize"

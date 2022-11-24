@@ -139,8 +139,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
     lastName
   }: User): TableDataSource {
     return {
-      selectId: id,
-      country
+      country,
+      selectId: id
     };
   }
 }
