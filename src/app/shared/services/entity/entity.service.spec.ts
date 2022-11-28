@@ -4,13 +4,12 @@ import {
   TestRequest
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Entity, EntityApiServiceOptions } from '../../models';
+import { Entity } from '../../models';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { EntityService } from './entity.service';
-import { optionParams } from './entity.service.utils';
 
 interface Foo extends Entity {
   foo: string;
@@ -33,8 +32,6 @@ describe('EntityService', () => {
   const entity: Entity = { ...notPersisted, id };
   const error = new ErrorEvent('test error');
 
-  let spiedOptionParams : jest.Spied<typeof optionParams> | undefined = undefined;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -43,7 +40,6 @@ describe('EntityService', () => {
 
     service = TestBed.inject(EntityService);
     httpTestingController = TestBed.inject(HttpTestingController);
-
   });
 
   afterEach(() => {
@@ -55,7 +51,7 @@ describe('EntityService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('create', () => {
+  describe('create$', () => {
     it(`should on success :
           - make a POST request to the uri
           - pass a the argument to the body of the request
